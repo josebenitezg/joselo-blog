@@ -1,0 +1,40 @@
+---
+title: 'Why we need Levels of Autonomy on Unattended retail'
+publishedAt: '2024-06-07'
+summary: 'Autonomous retail has been emerge recently but we weren't honest about how the current Vision Models can or can't help us to achieve that autonomy'
+---
+
+We are witnessing the emergence of various technologies aimed at transforming what we currently know as unattended retail, such as micromarkets and vending machines. Many of these new technologies employ weight sensors, RFID, or other high-cost sensors, while some rely entirely on a multitude of cameras. These setups, besides being expensive, are complex to maintain and most of the time  less accurate or completely inaccurate.
+
+We at <a>intuitivo</a> utilizes only three cameras, with no additional sensors, making it ten times more cost-effective than other market solutions and all the technology relies on a robust AI infrastructure in the cloud that makes it even more scalable.
+
+At the same time, several state-of-the-art (SOTA) Vision AI models with multimodal capabilities are emerging, such as Google's open-source PaLI-GEMMA 
+or even closed-source models like GPT-4o and a lot more.
+
+However, when we put these models into perspective, they don't make sense for real-time processing of videos to ‘see’ what people are taking from the shelves. 
+Therefore, we must rely on older (but robust) architectures like CNNs (Convolutional Neural Networks). Even considering the training of these advanced models is impractical for our purposes.
+
+Even with advanced architectures like Vision Transformers, processing high-resolution images in real time becomes very slow. Yann LeCun has discussed this issue, emphasizing the need to understand our current technological standing and what is feasible with today's capabilities.
+
+<StaticTweet id="1795396356028199306" />
+
+In a use case like this, where high frames per second (FPS) image processing is required to capture as much information as possible from multiple cameras, we must understand that the solution lies in using architectures like CNNs. Consider that models like GPT-4/GPT-4o can take up to several seconds to describe an image, often with minimal relevant data for your specific use case, while you need to process dozens of images per second.
+
+When it comes to specific domains, this is a case for which multimodal models are not well-suited. We conducted extensive tests on these Large Multimodal Models, and the description of a single frame was often very confusing, especially when trying to identify the product a person is holding or that is on the shelf.
+
+Therefore, we must be conscious of the current state of technology and what it allows us to achieve.
+
+If we take the production of autonomous cars as an example, we see companies like Tesla using only cameras for their autonomous driving systems. This approach is driven by the need to keep production costs manageable, as adding sensors and other hardware can make unattended retail solutions prohibitively expensive. That's why, we have also adopted a camera-only approach. By leveraging advanced Vision AI technology, we can operate without the added costs and complexities associated with additional sensors. This strategy allows us to deliver scalable, cost-effective solutions for the retail industry.
+
+However, transitioning to a camera-only system presents significant challenges in processing videos from transactions. 
+These challenges include complex action recognition, product occlusion, and product confusion due to similarities. It’s not just about implementing a model to recognize products; countless variables can arise, making it impossible to control every scenario. This complexity mirrors that of autonomous vehicles, which also have varying levels of autonomy to progressively solve self-driving challenges. In unattended retail, particularly with camera-only systems, the same principles apply. We need to clearly define the levels of autonomy and honestly assess the current state-of-the-art in Vision AI technology for unattended retail.
+
+That's why we need to define levels of autonomy in unattended retail. 
+We currently lack a model that can effectively solve the two main challenges: 
+action detection and understanding people's behaviors around the shelves (which is incredibly difficult) and 
+identifying millions of retail products that the models weren't trained on.
+
+To address these challenges, we need to progress step by step, using defined levels of autonomy. 
+This gradual approach allows us to incrementally improve the system's ability to "see" and "know" what people are taking or returning 
+from shelves and charge them accordingly. By systematically increasing autonomy, we can better handle transactions and enhance the 
+overall efficiency and accuracy of unattended retail systems.
