@@ -66,7 +66,7 @@ export default function Page() {
         I lead the AI team and oversee the development of the infrastructure for millions of autonomous points of purchase, using deep learning, IoT, and data science as core competencies. My previous roles have included founding and serving as CTO of Aratiri, a startup focused on digital manufacturing, 3D design, 3D printing and IoT development.
       </p>
       <p className="prose prose-neutral dark:prose-invert mb-8">
-        My journey began with a deep passion for technology and a drive to solve complex problems. As an advocate for innovation, I have consistently aimed to create solutions that make a significant impact. This includes my work at NutriHuevos, Po Paraguay, Función Digital, and Max Maquinas S.A.
+        My journey began with a deep passion for technology and a drive to solve complex problems. As an advocate for innovation, I have consistently aimed to create solutions that make a significant impact.
       </p>
       <h2 className="font-semibold text-2xl mb-4">What I've beed doing</h2>
       <ul className="list-disc pl-6 prose prose-neutral dark:prose-invert mb-8">
