@@ -24,6 +24,14 @@ export const metadata: Metadata = {
     siteName: 'Jose Benitez',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: 'https://joselo.ai/og-bg.png',
+        width: 1200,
+        height: 630,
+        alt: 'Jose Benitez',
+      },
+    ],
   },
   robots: {
     index: true,
