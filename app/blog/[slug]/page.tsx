@@ -23,8 +23,8 @@ export async function generateMetadata({
     image,
   } = post.metadata;
   let ogImage = image
-    ? `https://leerob.io${image}`
-    : `https://leerob.io/og?title=${title}`;
+    ? `https://joselo.ai${image}`
+    : `https://joselo.ai/og?title=${title}`;
 
   return {
     title,
@@ -34,7 +34,7 @@ export async function generateMetadata({
       description,
       type: 'article',
       publishedTime,
-      url: `https://leerob.io/blog/${post.slug}`,
+      url: `https://joselo.ai/blog/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -103,9 +103,9 @@ export default function Blog({ params }) {
             dateModified: post.metadata.publishedAt,
             description: post.metadata.summary,
             image: post.metadata.image
-              ? `https://leerob.io${post.metadata.image}`
-              : `https://leerob.io/og?title=${post.metadata.title}`,
-            url: `https://leerob.io/blog/${post.slug}`,
+              ? `https://joselo.ai${post.metadata.image}`
+              : `https://joselo.ai/og?title=${post.metadata.title}`,
+            url: `https://joselo.ai/blog/${post.slug}`,
             author: {
               '@type': 'Person',
               name: 'Lee Robinson',
