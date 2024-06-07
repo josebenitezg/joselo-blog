@@ -1,8 +1,3 @@
-"use client";
-
-import React from 'react';
-import Tweets from "./components/TwitterFeed";
-
 export default function Page() {
   return (
     <section>
@@ -46,7 +41,6 @@ export default function Page() {
           Funny talk with Satya Mallick, CEO at OpenCV, the world's largest computer vision library
         </a>
       </p>
-      <Tweets />
     </section>
   );
 }
