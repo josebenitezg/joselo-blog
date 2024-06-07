@@ -6,7 +6,6 @@ import { Navbar } from './components/nav';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SandpackCSS } from './blog/[slug]/sandpack';
-import TwitterFeed from './components/TwitterFeed'; // Import the TwitterFeed component
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://joselo.ai'),

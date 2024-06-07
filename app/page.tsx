@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <section>
-      <h1 className="font-medium text-2xl mb-8 tracking-tighter">Hey There, Welcome! 👋🏼</h1>
+      <h1 className="font-medium text-2xl mb-8 tracking-tighter">my portfolio</h1>
       <p className="prose prose-neutral dark:prose-invert">
         I'm Jose.<br />
         Obsessed with neural networks and biohacking. I tinker with awesome tech at{' '}
@@ -44,4 +44,3 @@ export default function Page() {
     </section>
   );
 }
-
