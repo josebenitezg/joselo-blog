@@ -34,6 +34,10 @@
 html {
   min-width: 360px;
 }
+/* 
+body {
+  @apply min-h-screen flex flex-col;
+} */
 
 .prose .anchor {
   @apply absolute invisible no-underline;
