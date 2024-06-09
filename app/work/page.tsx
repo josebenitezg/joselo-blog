@@ -60,7 +60,7 @@ export default function Page() {
     <section className="max-w-4xl mx-auto p-8">
       <h1 className="font-medium text-3xl mb-8 tracking-tighter text-center">About</h1>
       <p className="prose prose-neutral dark:prose-invert mb-8">
-        I’m Jose Benitez Genes, an electrical engineer and entrepreneur passionate about creating new tech. Originally from Asunción, Paraguay, I am the Founder and Director of AI at Intuitivo, a startup that creates the AI Infraestructure for the unattended retail
+        I’m Jose Benitez Genes, an electrical engineer and entrepreneur passionate about creating new tech. Originally from <a href="https://en.wikipedia.org/wiki/Ybycu%C3%AD" target="_blank" rel="noopener noreferrer">Ybycui</a>, Paraguay. Currently Founder and Director of AI at Intuitivo, a startup that creates the AI Infraestructure for the unattended retail
       </p>
       <p className="prose prose-neutral dark:prose-invert mb-8">
         I lead the AI team and oversee the development of the infrastructure for millions of autonomous points of purchase, using deep learning, IoT, and data science as core competencies. My previous roles have included founding and serving as CTO of Aratiri, a startup focused on digital manufacturing, 3D design, 3D printing and IoT development.
