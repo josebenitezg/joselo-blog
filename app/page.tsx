@@ -43,6 +43,16 @@ export default function Page() {
           Funny talk with Satya Mallick, CEO at OpenCV, the world's largest computer vision library
         </a>
       </p>
+      <p className="prose prose-neutral dark:prose-invert">
+        🏆{' '}
+        <a
+          href="https://www.innovatorsunder35.com/the-list/jos%C3%A9-ben%C3%ADtez/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          MIT Innovator Under 35 - 2022
+        </a>
+      </p>
     </section>
   );
 }

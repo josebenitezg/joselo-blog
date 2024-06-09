@@ -97,8 +97,8 @@ export default function Page() {
       </ul> */}
       <h2 className="font-semibold text-2xl mb-4">Honors and Awards</h2>
       <ul className="list-disc pl-6 prose prose-neutral dark:prose-invert mb-8">
-        <li>Innovator Under 35</li>
-        <li>O1 Visa Holder</li>
+        <li>MIT Innovator Under 35</li>
+        <li>O1 US Visa Holder</li>
       </ul>
     </section>
   );
