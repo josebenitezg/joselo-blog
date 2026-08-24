@@ -21,6 +21,15 @@ export const Media: CollectionConfig = {
       type: "text",
       required: true,
     },
+    {
+      name: "seedKey",
+      type: "text",
+      unique: true,
+      index: true,
+      admin: {
+        hidden: true,
+      },
+    },
   ],
   upload: {
     adminThumbnail: "thumbnail",

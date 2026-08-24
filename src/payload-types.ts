@@ -182,6 +182,7 @@ export interface Post {
 export interface Media {
   id: number;
   alt: string;
+  seedKey?: string | null;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -489,6 +490,7 @@ export interface PagesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  seedKey?: T;
   prefix?: T;
   updatedAt?: T;
   createdAt?: T;

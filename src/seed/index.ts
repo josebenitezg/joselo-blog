@@ -11,6 +11,10 @@ import {
 import { getPayload } from "payload";
 
 import type { Page, Post } from "@/payload-types";
+import {
+  getAdminSeedConfig,
+  helloWorldCoverSeedKey,
+} from "@/seed/settings";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -122,24 +126,23 @@ async function markdownToLexical(
 async function seed() {
   const payload = await getPayload({ config });
 
-  const adminEmail = process.env.PAYLOAD_ADMIN_EMAIL;
-  const adminPassword = process.env.PAYLOAD_ADMIN_PASSWORD;
-  if (adminEmail && adminPassword) {
+  const adminSeed = getAdminSeedConfig();
+  if (adminSeed) {
     const existingAdmin = await payload.find({
       collection: "users",
       limit: 1,
       overrideAccess: true,
       pagination: false,
-      where: { email: { equals: adminEmail } },
+      where: { email: { equals: adminSeed.email } },
     });
     if (existingAdmin.docs.length === 0) {
       await payload.create({
         collection: "users",
         overrideAccess: true,
         data: {
-          email: adminEmail,
+          email: adminSeed.email,
           name: "José Benítez",
-          password: adminPassword,
+          password: adminSeed.password,
         },
       });
     }
@@ -150,7 +153,7 @@ async function seed() {
     limit: 1,
     overrideAccess: true,
     pagination: false,
-    where: { filename: { equals: "hello-world.jpg" } },
+    where: { seedKey: { equals: helloWorldCoverSeedKey } },
   });
   const existingMedia = mediaResult.docs[0];
   const helloWorldMedia = existingMedia
@@ -158,7 +161,10 @@ async function seed() {
     : await payload.create({
         collection: "media",
         overrideAccess: true,
-        data: { alt: "Abstract blue AI network" },
+        data: {
+          alt: "Abstract blue AI network",
+          seedKey: helloWorldCoverSeedKey,
+        },
         filePath: path.resolve(process.cwd(), "public/images/posts/hello-world.jpg"),
       });
 

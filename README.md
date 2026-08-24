@@ -21,9 +21,10 @@ npm run dev
 - Publication: `http://localhost:3000`
 - Payload admin: `http://localhost:3000/admin`
 
-The first admin can be created in `/admin`, or deterministically during the seed
-when `PAYLOAD_ADMIN_EMAIL` and `PAYLOAD_ADMIN_PASSWORD` are present. Never put
-real credentials in committed files.
+Create the first admin interactively in `/admin`. Automated admin creation is
+off by default and runs only when `PAYLOAD_SEED_ADMIN=true` together with
+`PAYLOAD_ADMIN_EMAIL` and `PAYLOAD_ADMIN_PASSWORD`. Never put real credentials
+in committed files or enable that flag in a routine production seed.
 
 ## Content model
 

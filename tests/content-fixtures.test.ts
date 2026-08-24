@@ -3,6 +3,12 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
+import { Media } from "@/collections/Media";
+import {
+  getAdminSeedConfig,
+  helloWorldCoverSeedKey,
+} from "@/seed/settings";
+
 const fixtures = path.resolve(process.cwd(), "src/seed/fixtures");
 
 test("the import contains exactly the approved personal content", async () => {
@@ -43,4 +49,40 @@ test("Payload dependencies are pinned to one compatible release", async () => {
   for (const [name, version] of payloadPackages) {
     assert.equal(version, "3.88.0", `${name} must stay pinned`);
   }
+});
+
+test("seeded media has one stable hidden identity", () => {
+  const seedKeyField = Media.fields.find(
+    (field) => "name" in field && field.name === "seedKey",
+  );
+
+  assert.equal(helloWorldCoverSeedKey, "hello-world-cover");
+  assert.ok(seedKeyField && "unique" in seedKeyField);
+  assert.equal(seedKeyField.unique, true);
+  assert.equal(seedKeyField.index, true);
+  assert.deepEqual(seedKeyField.admin, { hidden: true });
+});
+
+test("admin seed requires an explicit flag as well as credentials", () => {
+  const credentials = {
+    PAYLOAD_ADMIN_EMAIL: "admin@example.com",
+    PAYLOAD_ADMIN_PASSWORD: "not-a-real-password",
+  };
+
+  assert.equal(getAdminSeedConfig(credentials), null);
+  assert.equal(
+    getAdminSeedConfig({ ...credentials, PAYLOAD_SEED_ADMIN: "false" }),
+    null,
+  );
+  assert.deepEqual(
+    getAdminSeedConfig({ ...credentials, PAYLOAD_SEED_ADMIN: "true" }),
+    {
+      email: credentials.PAYLOAD_ADMIN_EMAIL,
+      password: credentials.PAYLOAD_ADMIN_PASSWORD,
+    },
+  );
+  assert.throws(
+    () => getAdminSeedConfig({ PAYLOAD_SEED_ADMIN: "true" }),
+    /requires PAYLOAD_ADMIN_EMAIL and PAYLOAD_ADMIN_PASSWORD/,
+  );
 });

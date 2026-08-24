@@ -53,7 +53,9 @@ export default buildConfig({
       alwaysInsertFields: true,
       clientUploads: true,
       collections: {
-        media: true,
+        media: {
+          prefix: "",
+        },
       },
       enabled: Boolean(blobToken),
       token: blobToken,
