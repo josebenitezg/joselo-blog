@@ -1,53 +1,71 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fleerob%2Fleerob.io)
+# joselo.blog
 
-# joselo.ai - Personal Website
+A dark-mode-first personal publication powered by Next.js App Router and Payload CMS.
+Payload/Postgres is the only runtime source of truth; the Markdown files under
+`src/seed/fixtures` exist only for the one-way, idempotent content import.
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Database**: [Postgres](https://vercel.com/postgres) - Supabase
-- **Authentication**: [NextAuth.js](https://next-auth.js.org)
-- **Deployment**: [Vercel](https://vercel.com)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com)
-- **Analytics**: [Vercel Analytics](https://vercel.com/analytics)
+## Local development
 
-## Running Locally
-
-This application requires Node.js v18.17+.
+Requirements: Node 24, Docker Desktop, and npm.
 
 ```bash
-git clone this repo
-cd leerob.io
-bun install
-bun run setup # Remove all of my personal information
-bun dev
+cp .env.example .env.local
+# Fill PAYLOAD_SECRET and PAYLOAD_PREVIEW_SECRET.
+npm install
+npm run db:up
+npm run db:migrate
+npm run seed
+npm run dev
 ```
 
+- Publication: `http://localhost:3000`
+- Payload admin: `http://localhost:3000/admin`
 
-## Database Schema
+Create the first admin interactively in `/admin`. Automated admin creation is
+off by default and runs only when `PAYLOAD_SEED_ADMIN=true` together with
+`PAYLOAD_ADMIN_EMAIL` and `PAYLOAD_ADMIN_PASSWORD`. Never put real credentials
+in committed files or enable that flag in a routine production seed.
 
-```sql
-CREATE TABLE redirects (
-  id SERIAL PRIMARY KEY,
-  source VARCHAR(255) NOT NULL,
-  destination VARCHAR(255) NOT NULL,
-  permanent BOOLEAN NOT NULL
-);
+## Content model
 
-CREATE TABLE guestbook (
-  id SERIAL PRIMARY KEY,
-  email VARCHAR(255) NOT NULL,
-  body TEXT NOT NULL,
-  created_by VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
-);
+- `Posts`: short slug, metadata, cover relation, tags, and Lexical rich text.
+- `Pages`: the curated About and Personal lab pages.
+- `Media`: local files in development and Vercel Blob in production.
+- `Users`: Payload-authenticated administrators.
 
-CREATE TABLE views (
-  slug VARCHAR(255) PRIMARY KEY,
-  count INT NOT NULL
-);
+Posts and pages include drafts, versions, autosave, scheduled publishing, and
+authenticated live preview. Public queries enforce published status. The seed
+uses Payload's Markdown-to-Lexical converter; display math is preserved as a
+first-class Equation block and rendered with KaTeX.
+
+## Production on Vercel
+
+Provision these resources only after approval:
+
+1. A Neon Postgres database linked to the existing Vercel project.
+2. A Vercel Blob store for the `media` collection.
+3. Production and Preview environment variables from `.env.example`.
+
+Required production variables are `PAYLOAD_DATABASE_URL`, `PAYLOAD_SECRET`,
+`PAYLOAD_PREVIEW_SECRET`, `BLOB_READ_WRITE_TOKEN`, and
+`NEXT_PUBLIC_SITE_URL=https://joselo.blog` (Production scope). Payload uses
+Vercel's deployment URL automatically in Preview, so admin and live-preview
+iframes stay on the current deployment. Run committed Payload migrations against
+Neon before serving a new schema. Blob client uploads are enabled so large media
+does not cross the Vercel Function upload limit.
+
+## Quality gates
+
+```bash
+npm run payload:generate
+npm run check
 ```
 
-## License
+`npm run check` runs lint, TypeScript, tests, and the Next production build.
+Run `npm run seed` twice against a disposable local database to verify that a
+second import makes no content changes or new versions.
 
-
-Inspired in [`Lee Rob`](https://github.com/leerob/leerob.io) blog
+`npm audit --omit=dev` currently reports the upstream esbuild development-server
+advisory through Payload's `drizzle-kit` dependency. Payload 3.88.0 has no patched
+dependency path for it yet; the affected server is not exposed by this app at
+runtime. DOMPurify is pinned to its patched release through `overrides`.
