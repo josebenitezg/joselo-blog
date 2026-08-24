@@ -22,7 +22,7 @@ export function PostCard({ post, index, showImage = false }: PostCardProps) {
         <Link className="post-card__image" href={`/${post.slug}`} tabIndex={-1}>
           <Image
             src={post.image}
-            alt=""
+            alt={post.imageAlt ?? ""}
             fill
             sizes="(max-width: 760px) 100vw, 36vw"
           />

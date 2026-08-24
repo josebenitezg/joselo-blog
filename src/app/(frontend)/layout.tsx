@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import { draftMode, headers } from "next/headers";
 import localFont from "next/font/local";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { LivePreviewListener } from "@/components/LivePreviewListener";
 import { siteConfig } from "@/lib/site";
 
 const instrumentSerif = localFont({
@@ -57,7 +59,17 @@ export const viewport: Viewport = {
   themeColor: "#090a0a",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  const preview = (await draftMode()).isEnabled;
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
+  const protocol =
+    requestHeaders.get("x-forwarded-proto") ??
+    (host?.startsWith("localhost") || host?.startsWith("127.0.0.1") ? "http" : "https");
+  const serverURL = host ? `${protocol}://${host}` : siteConfig.url;
+
   return (
     <html lang="en" className={instrumentSerif.variable}>
       <body>
@@ -67,6 +79,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteHeader />
         <main id="main-content">{children}</main>
         <SiteFooter />
+        {preview ? <LivePreviewListener serverURL={serverURL} /> : null}
       </body>
     </html>
   );

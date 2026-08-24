@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
   agentRules: false,
@@ -8,7 +9,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "miro.medium.com" },
       {
         protocol: "https",
-        hostname: "demzamss7t8rinle.public.blob.vercel-storage.com",
+        hostname: "**.public.blob.vercel-storage.com",
       },
       { protocol: "https", hostname: "preview.redd.it" },
       { protocol: "https", hostname: "cdn.openart.ai" },
@@ -16,4 +17,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPayload(nextConfig);

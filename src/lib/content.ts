@@ -1,7 +1,9 @@
+import config from "@payload-config";
+import { draftMode } from "next/headers";
+import { getPayload } from "payload";
 import { cache } from "react";
-import { readFile, readdir } from "node:fs/promises";
-import path from "node:path";
-import matter from "gray-matter";
+
+import type { Media, Page as PayloadPage, Post as PayloadPost } from "@/payload-types";
 
 export type PostLanguage = "en" | "es";
 export type PostKind = "essay" | "note" | "experiment";
@@ -13,120 +15,118 @@ export type Post = {
   date: string;
   tags: string[];
   image?: string;
-  draft: boolean;
+  imageAlt?: string;
   language: PostLanguage;
   kind: PostKind;
-  body: string;
+  content: PayloadPost["content"];
   readingMinutes: number;
 };
 
 export type ContentPage = {
-  slug: string;
+  slug: "about" | "lab";
   title: string;
   headline: string;
   description: string;
-  body: string;
+  content: PayloadPage["content"];
 };
 
-const postsDirectory = path.join(process.cwd(), "content/posts");
-const pagesDirectory = path.join(process.cwd(), "content/pages");
-const WORD_PATTERN = /[\p{L}\p{N}]+/gu;
-
-function asString(value: unknown, fallback = "") {
-  return typeof value === "string" ? value : fallback;
+function mediaUrl(cover: PayloadPost["cover"]) {
+  if (!cover || typeof cover === "number") return undefined;
+  const media = cover as Media;
+  return media.url ?? undefined;
 }
 
-function asDateString(value: unknown) {
-  if (value instanceof Date && !Number.isNaN(value.valueOf())) {
-    return value.toISOString().slice(0, 10);
-  }
-
-  return asString(value, "1970-01-01").slice(0, 10);
+function mediaAlt(cover: PayloadPost["cover"]) {
+  if (!cover || typeof cover === "number") return undefined;
+  return (cover as Media).alt;
 }
 
-function asStringArray(value: unknown) {
-  if (!Array.isArray(value)) return [];
-  return value.filter(
-    (entry): entry is string => typeof entry === "string" && entry.trim() !== "",
-  );
-}
-
-function asLanguage(value: unknown): PostLanguage {
-  return value === "es" ? "es" : "en";
-}
-
-function asKind(value: unknown): PostKind {
-  if (value === "note" || value === "experiment") return value;
-  return "essay";
-}
-
-function estimateReadingMinutes(body: string) {
-  const words = body.match(WORD_PATTERN)?.length ?? 0;
-  return Math.max(1, Math.ceil(words / 210));
-}
-
-function parsePost(slug: string, source: string): Post {
-  const { data, content } = matter(source);
-  const image = asString(data.image);
-
+function toPost(post: PayloadPost): Post {
   return {
-    slug,
-    title: asString(data.title, "Untitled"),
-    description: asString(data.description),
-    date: asDateString(data.date),
-    tags: asStringArray(data.tags),
-    image: image || undefined,
-    draft: data.draft === true,
-    language: asLanguage(data.language),
-    kind: asKind(data.kind),
-    body: content.trim(),
-    readingMinutes: estimateReadingMinutes(content),
+    slug: post.slug,
+    title: post.title,
+    description: post.description,
+    date: post.publishedAt.slice(0, 10),
+    tags: post.tags?.map(({ value }) => value) ?? [],
+    image: mediaUrl(post.cover),
+    imageAlt: mediaAlt(post.cover),
+    language: post.language,
+    kind: post.kind,
+    content: post.content,
+    readingMinutes: post.readingMinutes,
   };
 }
 
-export const getAllPosts = cache(async (): Promise<Post[]> => {
-  const fileNames = await readdir(postsDirectory);
-  const posts = await Promise.all(
-    fileNames
-      .filter((fileName) => fileName.endsWith(".mdx"))
-      .map(async (fileName) => {
-        const slug = fileName.replace(/\.mdx$/, "");
-        const source = await readFile(path.join(postsDirectory, fileName), "utf8");
-        return parsePost(slug, source);
-      }),
-  );
+function toPage(page: PayloadPage): ContentPage {
+  return {
+    slug: page.slug,
+    title: page.title,
+    headline: page.headline,
+    description: page.description,
+    content: page.content,
+  };
+}
 
-  return posts.toSorted((a, b) => b.date.localeCompare(a.date));
+export const getPublishedPosts = cache(async (): Promise<Post[]> => {
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: "posts",
+    depth: 1,
+    limit: 100,
+    overrideAccess: false,
+    pagination: false,
+    sort: "-publishedAt",
+    where: {
+      _status: {
+        equals: "published",
+      },
+    },
+  });
+
+  return result.docs.map(toPost);
 });
 
-export async function getPublishedPosts() {
-  return (await getAllPosts()).filter((post) => !post.draft);
-}
+export const getPublishedPostBySlug = cache(async (slug: string) => {
+  const preview = (await draftMode()).isEnabled;
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: "posts",
+    depth: 1,
+    draft: preview,
+    limit: 1,
+    overrideAccess: preview,
+    pagination: false,
+    where: {
+      slug: {
+        equals: slug,
+      },
+      ...(preview ? {} : { _status: { equals: "published" } }),
+    },
+  });
 
-export async function getPublishedPostBySlug(slug: string) {
-  return (await getPublishedPosts()).find((post) => post.slug === slug) ?? null;
-}
+  return result.docs[0] ? toPost(result.docs[0]) : null;
+});
 
-export const getPageBySlug = cache(
-  async (slug: string): Promise<ContentPage | null> => {
-    try {
-      const source = await readFile(path.join(pagesDirectory, `${slug}.mdx`), "utf8");
-      const { data, content } = matter(source);
+export const getPageBySlug = cache(async (slug: "about" | "lab") => {
+  const preview = (await draftMode()).isEnabled;
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: "pages",
+    depth: 0,
+    draft: preview,
+    limit: 1,
+    overrideAccess: preview,
+    pagination: false,
+    where: {
+      slug: {
+        equals: slug,
+      },
+      ...(preview ? {} : { _status: { equals: "published" } }),
+    },
+  });
 
-      return {
-        slug,
-        title: asString(data.title, "Untitled"),
-        headline: asString(data.headline),
-        description: asString(data.description),
-        body: content.trim(),
-      };
-    } catch (error) {
-      const code = (error as NodeJS.ErrnoException).code;
-      if (code === "ENOENT") return null;
-      throw error;
-    }
-  },
-);
+  return result.docs[0] ? toPage(result.docs[0]) : null;
+});
 
 export function formatPostDate(date: string, language: PostLanguage) {
   return new Intl.DateTimeFormat(language === "es" ? "es-ES" : "en-US", {

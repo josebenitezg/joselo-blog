@@ -7,8 +7,6 @@ export default defineConfig([
   ...nextTypeScript,
   globalIgnores([
     ".next/**",
-    "public/admin/**",
-    "tina/__generated__/**",
     "next-env.d.ts",
   ]),
 ]);

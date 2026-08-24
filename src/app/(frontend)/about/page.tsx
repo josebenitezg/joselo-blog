@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MarkdownContent } from "@/components/MarkdownContent";
+import { RichTextContent } from "@/components/RichTextContent";
 import { PageIntro } from "@/components/PageIntro";
 import { getPageBySlug } from "@/lib/content";
 
@@ -22,7 +22,7 @@ export default async function AboutPage() {
         description={page.description}
       />
       <article className="page-body shell">
-        <MarkdownContent source={page.body} />
+        <RichTextContent content={page.content} />
       </article>
     </>
   );

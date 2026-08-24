@@ -5,14 +5,14 @@
 /.next/
 /out/
 
-# tina generated files
-/tina/__generated__/
-/public/admin/
-
 # local environment
 .env
 .env.local
 .env.*.local
+
+# local Payload uploads (production uses Vercel Blob)
+/public/media/*
+!/public/media/.gitkeep
 
 # local tooling
 .DS_Store

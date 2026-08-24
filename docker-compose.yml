@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: joselo_blog
+      POSTGRES_PASSWORD: joselo
+      POSTGRES_USER: joselo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U joselo -d joselo_blog"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "127.0.0.1:54339:5432"
+    volumes:
+      - joselo_blog_postgres:/var/lib/postgresql/data
+
+volumes:
+  joselo_blog_postgres:

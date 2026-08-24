@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MarkdownContent } from "@/components/MarkdownContent";
+import { RichTextContent } from "@/components/RichTextContent";
 import {
   formatPostDate,
   getPublishedPostBySlug,
-  getPublishedPosts,
   readingLabel,
 } from "@/lib/content";
 import { absoluteUrl, siteConfig } from "@/lib/site";
@@ -14,13 +13,6 @@ import { absoluteUrl, siteConfig } from "@/lib/site";
 type PostPageProps = {
   params: Promise<{ slug: string }>;
 };
-
-export const dynamicParams = false;
-
-export async function generateStaticParams() {
-  const posts = await getPublishedPosts();
-  return posts.map((post) => ({ slug: post.slug }));
-}
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -79,7 +71,7 @@ export default async function PostPage({ params }: PostPageProps) {
         <div className="post-cover shell">
           <Image
             src={post.image}
-            alt=""
+            alt={post.imageAlt ?? ""}
             fill
             priority
             sizes="(max-width: 1120px) 100vw, 1080px"
@@ -87,7 +79,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
       ) : null}
       <div className="post-body shell">
-        <MarkdownContent source={post.body} />
+        <RichTextContent content={post.content} />
       </div>
       <footer className="post-end shell">
         <p>End note</p>

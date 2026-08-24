@@ -1,7 +1,7 @@
 import { getPublishedPosts } from "@/lib/content";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 function escapeXml(value: string) {
   return value
