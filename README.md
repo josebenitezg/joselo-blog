@@ -45,7 +45,7 @@ Provision these resources only after approval:
 2. A Vercel Blob store for the `media` collection.
 3. Production and Preview environment variables from `.env.example`.
 
-Required production variables are `DATABASE_URL`, `PAYLOAD_SECRET`,
+Required production variables are `PAYLOAD_DATABASE_URL`, `PAYLOAD_SECRET`,
 `PAYLOAD_PREVIEW_SECRET`, `BLOB_READ_WRITE_TOKEN`, and
 `NEXT_PUBLIC_SITE_URL=https://joselo.blog` (Production scope). Payload uses
 Vercel's deployment URL automatically in Preview, so admin and live-preview

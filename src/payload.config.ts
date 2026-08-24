@@ -38,7 +38,8 @@ export default buildConfig({
   collections: [Posts, Pages, Media, Users],
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL ?? "",
+      connectionString:
+        process.env.PAYLOAD_DATABASE_URL ?? process.env.DATABASE_URL ?? "",
     },
   }),
   editor: lexicalEditor({
