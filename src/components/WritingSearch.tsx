@@ -54,26 +54,20 @@ export function WritingSearch({ posts }: { posts: SearchPost[] }) {
       </p>
       {results.length > 0 ? (
         <ol className="writing-list">
-          {results.map((post, index) => (
+          {results.map((post) => (
             <li key={post.slug}>
               <article className="writing-row" lang={post.language}>
-                <span className="writing-row__number" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+                <time className="writing-row__date" dateTime={post.date}>
+                  {post.displayDate}
+                </time>
                 <div>
                   <p className="writing-row__meta">
                     <span>{post.kind}</span>
-                    <time dateTime={post.date}>{post.displayDate}</time>
                   </p>
                   <h2>
                     <Link href={`/${post.slug}`}>{post.title}</Link>
                   </h2>
                   <p className="writing-row__description">{post.description}</p>
-                  <div className="tag-list" aria-label="Topics">
-                    {post.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
                 </div>
                 <span className="writing-row__reading">{post.readingLabel}</span>
               </article>
