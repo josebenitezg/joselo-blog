@@ -22,7 +22,6 @@ export function PostCard({ post }: PostCardProps) {
         </div>
         <span className="post-card__reading">
           {readingLabel(post.readingMinutes, post.language)}
-          <span aria-hidden="true">↗</span>
         </span>
       </Link>
     </article>

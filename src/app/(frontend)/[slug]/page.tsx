@@ -50,7 +50,7 @@ export default async function PostPage({ params }: PostPageProps) {
     <article className="post-page" lang={post.language}>
       <header className="post-header shell">
         <Link className="back-link" href="/writing">
-          <span aria-hidden="true">←</span> All writing
+          All writing
         </Link>
         <div className="post-header__meta">
           <span>{post.kind}</span>
@@ -84,7 +84,7 @@ export default async function PostPage({ params }: PostPageProps) {
       <footer className="post-end shell">
         <p>End note</p>
         <Link className="text-link" href="/writing">
-          Continue reading <span aria-hidden="true">↗</span>
+          Continue reading
         </Link>
       </footer>
     </article>

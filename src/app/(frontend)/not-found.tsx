@@ -7,7 +7,7 @@ export default function NotFound() {
       <h1>This thought isn’t here.</h1>
       <p>It may still be a draft, or it may have moved somewhere else.</p>
       <Link className="text-link" href="/writing">
-        Browse the archive <span aria-hidden="true">↗</span>
+        Browse the archive
       </Link>
     </section>
   );

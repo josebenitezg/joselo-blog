@@ -1,29 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { draftMode, headers } from "next/headers";
-import localFont from "next/font/local";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { LivePreviewListener } from "@/components/LivePreviewListener";
 import { siteConfig } from "@/lib/site";
-
-const instrumentSerif = localFont({
-  src: [
-    {
-      path: "./fonts/InstrumentSerif-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/InstrumentSerif-Italic.woff2",
-      weight: "400",
-      style: "italic",
-    },
-  ],
-  variable: "--font-display",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -56,7 +38,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: "dark",
-  themeColor: "#090909",
+  themeColor: "#181818",
 };
 
 export default async function RootLayout({
@@ -71,7 +53,7 @@ export default async function RootLayout({
   const serverURL = host ? `${protocol}://${host}` : siteConfig.url;
 
   return (
-    <html lang="en" className={instrumentSerif.variable}>
+    <html lang="en">
       <body>
         <a className="skip-link" href="#main-content">
           Skip to content
