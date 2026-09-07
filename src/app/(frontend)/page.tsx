@@ -9,41 +9,35 @@ export default async function HomePage() {
   return (
     <>
       <section className="hero shell">
-        <p className="eyebrow">A personal publication by José Benítez</p>
-        <h1>
-          Unfinished thoughts,
-          <br />
-          <em>kept in public.</em>
-        </h1>
-        <div className="hero__footer">
-          <p>
-            Essays on discipline, technology, meaning, and the experiments in
-            between. Written in English and Spanish.
+        <div className="hero__words">
+          <p className="eyebrow">A small corner of the internet</p>
+          <h1>José Benítez.<br /><span>Thinking out loud.</span></h1>
+          <p className="hero__description">
+            Notes on technology, discipline, and being human.
+            A place to work things out, one thought at a time.
           </p>
-          <Link className="text-link" href="/writing">
-            Start reading <span aria-hidden="true">↘</span>
-          </Link>
+          <p className="hero__language">In English &amp; español.</p>
         </div>
       </section>
 
       <section className="latest shell" aria-labelledby="latest-heading">
         <div className="section-heading">
-          <h2 id="latest-heading">Latest writing</h2>
+          <h2 id="latest-heading">Writing</h2>
           <Link className="text-link" href="/writing">
-            All writing <span aria-hidden="true">↗</span>
+            View all
           </Link>
         </div>
         <div className="post-grid">
-          {latestPosts.map((post) => (
+          {latestPosts.length ? latestPosts.map((post) => (
             <PostCard key={post.slug} post={post} />
-          ))}
+          )) : <p className="journal-empty">A fresh page. The first notes will be here soon.</p>}
         </div>
       </section>
 
       <section className="lab-callout shell" aria-labelledby="lab-heading">
         <div>
-          <p className="eyebrow">A personal lab</p>
-          <h2 id="lab-heading">Curiosity, measured carefully.</h2>
+          <p className="eyebrow">An ongoing experiment</p>
+          <h2 id="lab-heading">The personal lab.</h2>
         </div>
         <div>
           <p>
@@ -51,7 +45,7 @@ export default async function HomePage() {
             signals — documented as personal experiments, never medical advice.
           </p>
           <Link className="text-link" href="/lab">
-            Enter the lab <span aria-hidden="true">↗</span>
+            Explore the lab
           </Link>
         </div>
       </section>
