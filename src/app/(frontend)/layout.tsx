@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import { draftMode, headers } from "next/headers";
-import "katex/dist/katex.min.css";
 import "./globals.css";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { LivePreviewListener } from "@/components/LivePreviewListener";
 import { siteConfig } from "@/lib/site";
+
+const geist = Geist({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  variable: "--font-geist",
+});
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -38,7 +45,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: "dark",
-  themeColor: "#181818",
+  themeColor: "#000000",
 };
 
 export default async function RootLayout({
@@ -53,13 +60,13 @@ export default async function RootLayout({
   const serverURL = host ? `${protocol}://${host}` : siteConfig.url;
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
       <body>
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
         <SiteHeader />
-        <main id="main-content">{children}</main>
+        <main id="main-content" className="wrap">{children}</main>
         <SiteFooter />
         {preview ? <LivePreviewListener serverURL={serverURL} /> : null}
       </body>

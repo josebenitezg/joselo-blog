@@ -1,7 +1,7 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navigation = [
   { href: "/writing", label: "Writing" },
@@ -14,20 +14,21 @@ export function SiteHeader() {
 
   return (
     <header className="site-header">
-      <div className="shell site-header__inner">
-        <Link className="wordmark" href="/" aria-label="joselo.blog home">
-          <span className="site-mark" aria-hidden="true" />joselo
-        </Link>
-        <nav aria-label="Main navigation">
-          <ul className="nav-list">
-            {navigation.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} aria-current={pathname === item.href ? "page" : undefined}>{item.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+      <Link className="wordmark" href="/" aria-label="joselo.blog home">
+        <span className="mark" aria-hidden="true" />
+        joselo
+      </Link>
+      <nav className="site-nav" aria-label="Main navigation">
+        {navigation.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            aria-current={pathname === item.href ? "page" : undefined}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </nav>
     </header>
   );
 }

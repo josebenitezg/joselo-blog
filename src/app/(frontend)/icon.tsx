@@ -9,17 +9,16 @@ export default function Icon() {
       <div
         style={{
           alignItems: "center",
-          background: "#b9d7c5",
-          color: "#090a0a",
+          background: "#000000",
           display: "flex",
-          fontFamily: "Georgia",
-          fontSize: 42,
           height: "100%",
           justifyContent: "center",
           width: "100%",
         }}
       >
-        j.
+        <svg width="32" height="48" viewBox="0 0 12 18">
+          <path d="M0 0H12V18L6 13.14L0 18Z" fill="#ededed" />
+        </svg>
       </div>
     ),
     size,

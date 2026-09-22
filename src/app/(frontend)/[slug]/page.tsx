@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { RichTextContent } from "@/components/RichTextContent";
 import {
@@ -47,46 +46,27 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post) notFound();
 
   return (
-    <article className="post-page" lang={post.language}>
-      <header className="post-header shell">
-        <Link className="back-link" href="/writing">
-          All writing
-        </Link>
-        <div className="post-header__meta">
-          <span>{post.kind}</span>
-          <time dateTime={post.date}>{formatPostDate(post.date, post.language)}</time>
-          <span>{readingLabel(post.readingMinutes, post.language)}</span>
-        </div>
+    <article lang={post.language}>
+      <header className="page-head">
         <h1>{post.title}</h1>
-        <p className="post-header__description">{post.description}</p>
-        {post.tags.length > 0 ? (
-          <div className="tag-list" aria-label="Topics">
-            {post.tags.map((tag) => (
-              <span key={tag}>{tag}</span>
-            ))}
-          </div>
-        ) : null}
+        <p className="meta">
+          <time dateTime={post.date}>{formatPostDate(post.date, post.language)}</time>
+          <span aria-hidden="true"> · </span>
+          {readingLabel(post.readingMinutes, post.language)}
+        </p>
       </header>
       {post.image ? (
-        <div className="post-cover shell">
-          <Image
-            src={post.image}
-            alt={post.imageAlt ?? ""}
-            fill
-            priority
-            sizes="(max-width: 1120px) 100vw, 1080px"
-          />
-        </div>
+        <Image
+          className="cover"
+          src={post.image}
+          alt={post.imageAlt ?? ""}
+          width={post.imageWidth ?? 1200}
+          height={post.imageHeight ?? 800}
+          preload
+          sizes="(max-width: 41rem) calc(100vw - 3rem), 38rem"
+        />
       ) : null}
-      <div className="post-body shell">
-        <RichTextContent content={post.content} />
-      </div>
-      <footer className="post-end shell">
-        <p>End note</p>
-        <Link className="text-link" href="/writing">
-          Continue reading
-        </Link>
-      </footer>
+      <RichTextContent content={post.content} />
     </article>
   );
 }
