@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { RichTextContent } from "@/components/RichTextContent";
-import { PageIntro } from "@/components/PageIntro";
 import { getPageBySlug } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -15,15 +14,11 @@ export default async function AboutPage() {
   if (!page) notFound();
 
   return (
-    <>
-      <PageIntro
-        eyebrow="About"
-        title={page.headline}
-        description={page.description}
-      />
-      <article className="page-body shell">
-        <RichTextContent content={page.content} />
-      </article>
-    </>
+    <article>
+      <header className="page-head">
+        <h1>{page.headline}</h1>
+      </header>
+      <RichTextContent content={page.content} />
+    </article>
   );
 }

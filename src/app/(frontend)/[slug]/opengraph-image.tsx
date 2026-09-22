@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { notFound } from "next/navigation";
-import { getPublishedPostBySlug } from "@/lib/content";
+import { formatPostDate, getPublishedPostBySlug } from "@/lib/content";
 
 export const alt = "joselo.blog essay";
 export const size = { width: 1200, height: 630 };
@@ -19,40 +19,37 @@ export default async function PostOpenGraphImage({ params }: OpenGraphImageProps
     (
       <div
         style={{
-          background: "#090a0a",
-          color: "#f1efe9",
+          background: "#000000",
+          color: "#ededed",
           display: "flex",
           flexDirection: "column",
           height: "100%",
           justifyContent: "space-between",
-          padding: "72px 80px",
+          padding: 80,
           width: "100%",
         }}
       >
-        <div
-          style={{
-            color: "#b9d7c5",
-            display: "flex",
-            fontSize: 25,
-            justifyContent: "space-between",
-          }}
-        >
-          <span>joselo.blog</span>
-          <span>{post.kind}</span>
+        <div style={{ alignItems: "center", display: "flex", justifyContent: "space-between" }}>
+          <svg width="40" height="60" viewBox="0 0 12 18">
+            <path d="M0 0H12V18L6 13.14L0 18Z" fill="#ededed" />
+          </svg>
+          <span style={{ color: "#a1a1a1", fontSize: 28 }}>joselo.blog</span>
         </div>
-        <div
-          style={{
-            display: "flex",
-            fontFamily: "Georgia",
-            fontSize: post.title.length > 58 ? 64 : 78,
-            lineHeight: 1.02,
-            maxWidth: 1000,
-          }}
-        >
-          {post.title}
-        </div>
-        <div style={{ color: "#9a9992", display: "flex", fontSize: 24 }}>
-          José Benítez · {post.date}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              fontSize: post.title.length > 58 ? 64 : 80,
+              letterSpacing: -1.5,
+              lineHeight: 1.1,
+              maxWidth: 1000,
+            }}
+          >
+            {post.title}
+          </div>
+          <div style={{ color: "#a1a1a1", display: "flex", fontSize: 28, marginTop: 24 }}>
+            {`José Benítez · ${formatPostDate(post.date, post.language)}`}
+          </div>
         </div>
       </div>
     ),

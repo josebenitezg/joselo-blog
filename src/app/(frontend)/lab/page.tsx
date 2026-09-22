@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { RichTextContent } from "@/components/RichTextContent";
-import { PageIntro } from "@/components/PageIntro";
 import { getPageBySlug } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -16,15 +15,15 @@ export default async function LabPage() {
   if (!page) notFound();
 
   return (
-    <>
-      <PageIntro
-        eyebrow="Personal lab · Not medical advice"
-        title={page.headline}
-        description={page.description}
-      />
-      <article className="page-body shell">
-        <RichTextContent content={page.content} />
-      </article>
-    </>
+    <article>
+      <header className="page-head">
+        <h1>{page.headline}</h1>
+        <p role="note">
+          <strong>Not medical advice.</strong> Personal experiments only — not
+          recommendations, and not a substitute for professional care.
+        </p>
+      </header>
+      <RichTextContent content={page.content} />
+    </article>
   );
 }

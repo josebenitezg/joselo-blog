@@ -1,3 +1,4 @@
+import "katex/dist/katex.min.css";
 import {
   RichText,
   type JSXConvertersFunction,
@@ -20,8 +21,9 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
   blocks: {
     ...defaultConverters.blocks,
     equation: ({ node }: { node: EquationNode }) => {
+      const displayMode = node.fields.display !== false;
       const html = katex.renderToString(node.fields.formula, {
-        displayMode: node.fields.display !== false,
+        displayMode,
         strict: "ignore",
         throwOnError: false,
       });
@@ -29,6 +31,10 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
       return (
         <div
           className="prose-equation"
+          // Wide display equations scroll; make them reachable by keyboard.
+          tabIndex={displayMode ? 0 : undefined}
+          role={displayMode ? "group" : undefined}
+          aria-label={displayMode ? "Equation" : undefined}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       );

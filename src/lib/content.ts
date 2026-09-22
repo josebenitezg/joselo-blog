@@ -6,7 +6,6 @@ import { cache } from "react";
 import type { Media, Page as PayloadPage, Post as PayloadPost } from "@/payload-types";
 
 export type PostLanguage = "en" | "es";
-export type PostKind = "essay" | "note" | "experiment";
 
 export type Post = {
   slug: string;
@@ -16,8 +15,9 @@ export type Post = {
   tags: string[];
   image?: string;
   imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   language: PostLanguage;
-  kind: PostKind;
   content: PayloadPost["content"];
   readingMinutes: number;
 };
@@ -33,12 +33,22 @@ export type ContentPage = {
 function mediaUrl(cover: PayloadPost["cover"]) {
   if (!cover || typeof cover === "number") return undefined;
   const media = cover as Media;
-  return media.url ?? undefined;
+  if (!media.url) return undefined;
+  // Payload prefixes its own file route with serverURL, which isn't an allowed
+  // next/image remote host. Root-relative paths are optimized in-process.
+  const { pathname } = new URL(media.url, "http://localhost");
+  return pathname.startsWith("/api/media/file/") ? pathname : media.url;
 }
 
 function mediaAlt(cover: PayloadPost["cover"]) {
   if (!cover || typeof cover === "number") return undefined;
   return (cover as Media).alt;
+}
+
+function mediaSize(cover: PayloadPost["cover"]) {
+  if (!cover || typeof cover === "number") return {};
+  const { width, height } = cover as Media;
+  return width && height ? { imageWidth: width, imageHeight: height } : {};
 }
 
 function toPost(post: PayloadPost): Post {
@@ -50,8 +60,8 @@ function toPost(post: PayloadPost): Post {
     tags: post.tags?.map(({ value }) => value) ?? [],
     image: mediaUrl(post.cover),
     imageAlt: mediaAlt(post.cover),
+    ...mediaSize(post.cover),
     language: post.language,
-    kind: post.kind,
     content: post.content,
     readingMinutes: post.readingMinutes,
   };
